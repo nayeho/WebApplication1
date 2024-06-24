@@ -48,7 +48,7 @@
                     },
                     y: {
                         min: 15,
-                        max: 120
+                        max: 100
                     }
                 },
                 plugins: {
@@ -82,12 +82,16 @@
             chart.update();
         }
 
+        function getRandomFactor() {
+            return Math.random() * 0.02 + 0.99; // 0.99에서 1.01 사이의 랜덤 값
+        }
+
         setInterval(function () {
-            let newData1 = 20 + dataIndex * 0.1;
+            let newData1 = (20 + dataIndex * 0.1) * getRandomFactor();
             if (newData1 > 50) {
                 newData1 = 50;
             }
-            let newData2 = 40 + dataIndex * 0.1;
+            let newData2 = (40 + dataIndex * 0.1) * getRandomFactor();
             if (newData2 > 100) {
                 newData2 = 100;
             }

@@ -1,0 +1,100 @@
+﻿@page
+@{
+    ViewData["Title"] = "Graph Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1"></script>
+</head>
+<body>
+    <canvas id="Chart" width="800" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('Chart').getContext('2d');
+        var Chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Signal 1',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        fill: false,
+                        lineTension: 0.1
+                    },
+                    {
+                        label: 'Signal 2',
+                        data: [],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        fill: false,
+                        lineTension: 0.1
+                    }
+                ]
+            },
+            options: {
+                animation: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        min: 0,
+                        max: 1200
+                    },
+                    y: {
+                        min: 15,
+                        max: 120
+                    }
+                },
+                plugins: {
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',
+                            speed: 20,
+                            threshold: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        let dataIndex = 0;
+
+        function addData(chart, label, data1, data2) {
+            chart.data.labels.push(label);
+            chart.data.datasets[0].data.push(data1);
+            chart.data.datasets[1].data.push(data2);
+            chart.update();
+        }
+
+        setInterval(function () {
+            let newData1 = 20 + dataIndex * 0.1;
+            if (newData1 > 50) {
+                newData1 = 50;
+            }
+            let newData2 = 40 + dataIndex * 0.1;
+            if (newData2 > 100) {
+                newData2 = 100;
+            }
+            addData(Chart, dataIndex, newData1, newData2);
+            dataIndex++;
+        }, 50);
+
+    </script>
+</body>
+</html>
